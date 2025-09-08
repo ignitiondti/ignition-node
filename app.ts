@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: './config/.env' });
 import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
 import routes from './routes/index.ts';
 import { swaggerUi, specs } from './config/swagger.ts';
 
+dotenv.config();
 const app: Express = express();
 app.use(express.json());
 app.use(fileUpload());
