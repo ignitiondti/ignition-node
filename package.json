@@ -1,0 +1,38 @@
+{
+  "name": "summary-api-node",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run dev",
+    "dev": "nodemon --watch ./ --ext ts,js,json --exec \"node --no-warnings --loader ts-node/esm app.ts\"",
+    "test": "jest --config jest.config.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "@google/generative-ai": "latest",
+    "axios": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-fileupload": "latest",
+    "mammoth": "latest",
+    "officeparser": "latest",
+    "swagger-jsdoc": "latest",
+    "swagger-ui-express": "latest"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/express-fileupload": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "@types/swagger-jsdoc": "latest",
+    "@types/swagger-ui-express": "latest",
+    "jest": "latest",
+    "nodemon": "^3.1.10",
+    "ts-jest": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  },
+  "type": "module"
+}
