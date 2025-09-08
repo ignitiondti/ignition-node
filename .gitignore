@@ -4,9 +4,6 @@ node_modules/
 # Build output
 dist/
 
-# Environment variables
-.env
-
 # JavaScript files (since we're TypeScript only)
 *.js
 !jest.config.js
