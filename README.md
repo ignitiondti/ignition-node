@@ -3,7 +3,7 @@
 Projeto Node.js para sumarização de arquivos utilizando serviços de IA.
 
 ## Descrição
-Este projeto fornece uma API para upload de arquivos e geração de resumos automáticos utilizando modelos de linguagem. É possível integrar diferentes serviços de IA para sumarização de arquivos `.txt, .doc e .docx`.
+Este projeto fornece uma API para upload de arquivos e geração de resumos automáticos utilizando modelos de linguagem. É possível integrar diferentes serviços de IA para sumarização de arquivos `.txt e .docx`.
 
 ## Funcionalidades
 - Upload de arquivos

@@ -7,7 +7,7 @@ const options = {
     info: {
       title: 'Summary API',
       version: '1.0.0',
-      description: 'API para resumir arquivos .doc, .docx e .txt usando Gemini',
+      description: 'API para resumir arquivos .docx e .txt usando Gemini',
     },
     servers: [
       { url: 'http://localhost:3000/api' }
