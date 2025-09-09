@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "npm run dev",
     "dev": "nodemon --watch ./ --ext ts,js,json --exec \"node --no-warnings --loader ts-node/esm app.ts\"",
-    "test": "jest --config jest.config.js",
+    "test": "node --no-warnings --loader ts-node/esm ./node_modules/jest/bin/jest.js",
     "clean": "rm -rf dist"
   },
   "dependencies": {
