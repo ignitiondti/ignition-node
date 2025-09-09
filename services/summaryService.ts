@@ -15,6 +15,7 @@ export async function summarizeFile(file: UploadedFile): Promise<string> {
 
 export function validateFile(file: UploadedFile): void {
     // const extension = path.extname(file.name).toLowerCase();
+    // const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 
    throw new Error('Not implemented'); // Implementar validação de arquivo
 }
