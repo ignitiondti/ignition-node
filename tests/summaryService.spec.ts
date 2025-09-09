@@ -16,10 +16,6 @@ describe('Serviço de Resumo', () => {
       const file = { name: 'test.txt', data: Buffer.from('Hello World') } as UploadedFile;
       expect(() => validateFile(file)).not.toThrow();
     });
-    it('deve aceitar arquivo doc válido menor que 1MB', () => {
-      const file = { name: 'test.doc', data: Buffer.from('Hello World') } as UploadedFile;
-      expect(() => validateFile(file)).not.toThrow();
-    });
     it('deve aceitar arquivo docx válido menor que 1MB', () => {
       const file = { name: 'test.docx', data: Buffer.from('Hello World') } as UploadedFile;
       expect(() => validateFile(file)).not.toThrow();

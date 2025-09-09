@@ -7,7 +7,7 @@ const router = express.Router();
  * @swagger
  * /summarize:
  *   post:
- *     summary: Resume um arquivo (.doc, .docx, .txt) usando Gemini
+ *     summary: Resume um arquivo (.txt, .docx) usando Gemini
  *     requestBody:
  *       required: true
  *       content:
@@ -18,7 +18,7 @@ const router = express.Router();
  *               file:
  *                 type: string
  *                 format: binary
- *                 description: Arquivo para resumir (.doc, .docx, .txt)
+ *                 description: Arquivo para resumir (.txt, .docx)
  *     responses:
  *       200:
  *         description: Resumo gerado

@@ -17,7 +17,6 @@
     "express": "latest",
     "express-fileupload": "latest",
     "mammoth": "latest",
-    "officeparser": "latest",
     "swagger-jsdoc": "latest",
     "swagger-ui-express": "latest"
   },

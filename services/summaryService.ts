@@ -15,11 +15,11 @@ export async function summarizeFile(file: UploadedFile): Promise<string> {
 }
 
 export function validateFile(file: UploadedFile): void {
-    const allowedExt = ['.txt', '.doc', '.docx'];
+    const allowedExt = ['.txt', '.docx'];
     const ext = path.extname(file.name).toLowerCase();
 
     if (!allowedExt.includes(ext)) {
-        throw new Error('Invalid file extension. Allowed: .doc, .docx, .txt');
+        throw new Error('Invalid file extension. Allowed: .txt, .docx');
     }
     if (!file.data || file.data.length === 0) {
         throw new Error('File content is empty');
