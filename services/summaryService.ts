@@ -10,21 +10,11 @@ export async function summarizeFile(file: UploadedFile): Promise<string> {
     if (!text || text.trim().length === 0) {
         throw new Error('File contains no readable text');
     }
-    const prompt = `Resuma o seguinte texto de forma concisa:\n\n${text}`;
-    return await generateContentFromGemini(prompt);
+    return 'NOT IMPLEMENTED'; // Implementar chamada ao Gemini
 }
 
 export function validateFile(file: UploadedFile): void {
-    const allowedExt = ['.txt', '.docx'];
-    const ext = path.extname(file.name).toLowerCase();
+    // const extension = path.extname(file.name).toLowerCase();
 
-    if (!allowedExt.includes(ext)) {
-        throw new Error('Invalid file extension. Allowed: .txt, .docx');
-    }
-    if (!file.data || file.data.length === 0) {
-        throw new Error('File content is empty');
-    }
-    if (file.data.length > 1024 * 1024) {
-        throw new Error('File size exceeds 1MB');
-    }
+   throw new Error('Not implemented'); // Implementar validação de arquivo
 }

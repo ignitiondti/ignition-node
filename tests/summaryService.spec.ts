@@ -21,24 +21,27 @@ describe('Serviço de Resumo', () => {
       expect(() => validateFile(file)).not.toThrow();
     });
     it('deve rejeitar arquivos com extensões inválidas', () => {
-      const file = { name: 'test.pdf', data: Buffer.from('Hello World') } as UploadedFile;
-      expect(() => validateFile(file)).toThrow('Invalid file extension');
+      throw new Error('Not implemented');      // Implementar este teste
     });
     it('deve rejeitar arquivos vazios', () => {
       const file = { name: 'test.txt', data: Buffer.from('') } as UploadedFile;
-      expect(() => validateFile(file)).toThrow('File content is empty');
+      // Add expect clause
+      throw new Error('Not implemented');
     });
     it('deve rejeitar arquivos com data nulo', () => {
       const file = { name: 'test.txt', data: null } as unknown as UploadedFile;
-      expect(() => validateFile(file)).toThrow('File content is empty');
+      // Add expect clause
+      throw new Error('Not implemented');
     });
     it('deve rejeitar arquivos maiores que 1MB', () => {
       const file = { name: 'test.txt', data: Buffer.alloc(1024 * 1024 + 1) } as UploadedFile;
-      expect(() => validateFile(file)).toThrow('File size exceeds 1MB');
+      // Add expect clause
+      throw new Error('Not implemented');
     });
     it('deve rejeitar arquivo sem data', () => {
       const file = { name: 'test.txt' } as unknown as UploadedFile;
-      expect(() => validateFile(file)).toThrow('File content is empty');
+      // Add expect clause
+      throw new Error('Not implemented');
     });
   });
 
