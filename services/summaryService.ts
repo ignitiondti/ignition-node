@@ -17,6 +17,7 @@ export async function summarizeFile(file: UploadedFile): Promise<string> {
 export function validateFile(file: UploadedFile): void {
     const allowedExt = ['.txt', '.docx'];
     const ext = path.extname(file.name).toLowerCase();
+    const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 
     if (!allowedExt.includes(ext)) {
         throw new Error('Invalid file extension. Allowed: .txt, .docx');
@@ -24,7 +25,7 @@ export function validateFile(file: UploadedFile): void {
     if (!file.data || file.data.length === 0) {
         throw new Error('File content is empty');
     }
-    if (file.data.length > 1024 * 1024) {
+    if (file.data.length > MAX_FILE_SIZE) {
         throw new Error('File size exceeds 1MB');
     }
 }
