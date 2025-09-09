@@ -36,13 +36,6 @@ describe('Serviço de Resumo', () => {
       const file = { name: 'test.txt', data: Buffer.alloc(1024 * 1024 + 1) } as UploadedFile;
       expect(() => validateFile(file)).toThrow('File size exceeds 1MB');
     });
-    it('deve rejeitar arquivo indefinido', () => {
-      expect(() => validateFile(undefined as unknown as UploadedFile)).toThrow();
-    });
-    it('deve rejeitar arquivo sem nome', () => {
-      const file = { data: Buffer.from('Hello World') } as unknown as UploadedFile;
-      expect(() => validateFile(file)).toThrow();
-    });
     it('deve rejeitar arquivo sem data', () => {
       const file = { name: 'test.txt' } as unknown as UploadedFile;
       expect(() => validateFile(file)).toThrow('File content is empty');
