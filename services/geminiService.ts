@@ -7,7 +7,7 @@ export async function generateContentFromGemini(prompt: string): Promise<string>
         throw new Error("GEMINI_API_KEY environment variable is not set.");
     }
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
     const result = await model.generateContent(prompt);
     return result.response.text();
