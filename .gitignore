@@ -8,6 +8,11 @@ dist/
 *.js
 !jest.config.js
 
+# Environment variables — NEVER commit .env
+.env
+.env.local
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -21,3 +26,7 @@ yarn-error.log*
 
 # OS
 .DS_Store
+
+# Test artifacts
+tests/fixtures/oversized.txt
+coverage/
