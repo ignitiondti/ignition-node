@@ -4,7 +4,7 @@ description: Escreve um único teste Jest com falha para um cenário específico
 
 # Prompt: Escrever Teste Unitário com Falha
 
-Anexe: `tests/summaryService.spec.ts`, `services/summaryService.ts`, `docs/SPEC.md §[SEÇÃO]`
+Anexe: `tests/summaryService.spec.ts`, `services/summaryService.ts`, `.github/SPEC.md §[SEÇÃO]`
 
 ---
 

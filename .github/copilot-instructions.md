@@ -11,12 +11,12 @@ Escreva uma **User Story** e entregue ao agente da fase. O agente faz o trabalho
 
 | Fase | Agente | Entrada | Saída |
 |------|--------|---------|-------|
-| 1 — Plano de Código | `@phase1-coding-plan` | Sua US + `docs/SPEC.md` | `docs/CODING_PLAN.md` |
-| 2 — Testes | `@phase2-test-plan` | Sua US + `docs/CODING_PLAN.md` | `docs/TEST_PLAN.md` + testes com falha |
-| 3 — Implementação | `@phase3-development` | Sua US + `docs/CODING_PLAN.md` | Código funcionando, todos os testes passando |
-| 4 — Validação | `@phase4-validation` | `docs/SPEC.md` + todos os arquivos de serviço | Veredicto APROVADO / ALTERAÇÕES NECESSÁRIAS |
+| 1 — Plano de Código | `@phase1-coding-plan` | Sua US | `docs/CODING_PLAN.md` |
+| 2 — Roteiro de Testes | `@phase2-test-plan` | `docs/CODING_PLAN.md` | `docs/TEST_PLAN.md` (roteiro, sem código) |
+| 3 — Desenvolvimento | `@phase3-development` | `docs/CODING_PLAN.md` + `docs/TEST_PLAN.md` | Testes escritos + código implementado, tudo passando |
+| 4 — Validação | `@phase4-validation` | Todos os arquivos de serviço | Veredicto APROVADO / ALTERAÇÕES NECESSÁRIAS |
 
-Sempre anexe `docs/SPEC.md` — ele é a lei que substitui qualquer outra coisa.
+O `.github/SPEC.md` é a lei que substitui qualquer outra coisa — os agentes o leem automaticamente.
 
 ---
 
@@ -24,7 +24,7 @@ Sempre anexe `docs/SPEC.md` — ele é a lei que substitui qualquer outra coisa.
 
 | Prioridade | Arquivo | Por quê |
 |------------|---------|---------|
-| Obrigatório | `docs/SPEC.md` | Define cada regra que a IA deve seguir |
+| Automático | `.github/SPEC.md` | Lido pelos agentes — não precisa anexar |
 | Obrigatório | O arquivo que você está editando | Para que a IA veja o código real |
 | Recomendado | `docs/CODING_PLAN.md` (gerado na Fase 1) | Para que os agentes das Fases 2/3 se alinhem ao plano |
 
@@ -50,7 +50,7 @@ Sempre anexe `docs/SPEC.md` — ele é a lei que substitui qualquer outra coisa.
 
 ### Prompts bons
 ```
-"Usando docs/SPEC.md §3.3 como regra, implemente a verificação cruzada MIME+extensão em
+"Usando .github/SPEC.md §3.3 como regra, implemente a verificação cruzada MIME+extensão em
 services/summaryService.ts. A função deve lançar um AppError com code
 UNSUPPORTED_MEDIA_TYPE e status 415 quando a verificação falhar.
 Não altere nenhuma outra função."

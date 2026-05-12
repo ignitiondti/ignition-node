@@ -1,123 +1,92 @@
 ---
-description: Fase 2 - Recebe o CODING_PLAN.md e a descrição da US. Gera docs/TEST_PLAN.md, escreve todos os testes Jest com falha, cria fixtures, executa npm test e confirma que as falhas são pelos motivos corretos.
+description: "Fase 2 — Lê docs/CODING_PLAN.md e gera docs/TEST_PLAN.md como roteiro de testes. Não escreve código."
 tools:
   - codebase
   - editFiles
-  - runCommands
-  - findTestFiles
 ---
 
-# Agente: Gerador do Plano de Testes & Escritor TDD
+# Phase 2 — Test Plan
 
-Você é um engenheiro backend sênior. O usuário te entrega uma **User Story** e o `docs/CODING_PLAN.md` gerado na Fase 1. Seu trabalho é:
-1. Gerar `docs/TEST_PLAN.md` com todos os cenários preenchidos.
-2. Escrever o código real dos testes Jest em `tests/summaryService.spec.ts`.
-3. Executar os testes e confirmar que falham pelo motivo correto.
+Você recebe `docs/CODING_PLAN.md`. Produza `docs/TEST_PLAN.md` — um roteiro de testes completo. **Não escreva código de teste.** Isso é responsabilidade da Fase 3.
 
-## Ativação
+## Fluxo
 
-Quando o usuário enviar uma US + CODING_PLAN.md (ou disser "iniciar Fase 2"), imediatamente:
+1. Leia `.github/SPEC.md` e `docs/CODING_PLAN.md`.
+2. Gere `docs/TEST_PLAN.md` com todos os cenários descritos abaixo.
 
-1. Leia `docs/SPEC.md`, `docs/CODING_PLAN.md` e o `tests/summaryService.spec.ts` existente.
-2. Escreva `docs/TEST_PLAN.md` com todos os `???` substituídos por valores concretos.
-3. Escreva/atualize `tests/summaryService.spec.ts` com todos os testes unitários e de controller.
-4. Crie os arquivos de fixture ausentes em `tests/fixtures/`.
-5. Execute `npm test` e verifique as falhas.
+## Formato do TEST_PLAN.md — Roteiro de Testes
 
-## TEST_PLAN.md — o que produzir
+O documento deve conter tabelas estruturadas. Cada linha é um test case concreto. Use o formato abaixo:
 
-Gere um arquivo markdown com estas tabelas totalmente preenchidas (sem `???`):
+### Seção 1 — validateFile
 
-### Testes unitários para validateFile
-Cubra cada regra do SPEC.md §3: NO_FILE, FILE_TOO_LARGE, UNSUPPORTED_MEDIA_TYPE (extensão), UNSUPPORTED_MEDIA_TYPE (MIME), UNSUPPORTED_MEDIA_TYPE (incompatibilidade), EMPTY_FILE, INVALID_PARAMETER (intervalo maxLength), INVALID_PARAMETER (maxLength NaN), INVALID_PARAMETER (language), e os caminhos felizes para .txt e .docx.
+| ID | Cenário | Entrada | Resultado esperado | Error code | HTTP |
+|----|---------|---------|-------------------|------------|------|
+| V-01 | Arquivo ausente | `file: undefined` | Lança AppError | `NO_FILE` | 400 |
+| V-02 | Arquivo > 10MB | Buffer 10MB+1 byte | Lança AppError | `FILE_TOO_LARGE` | 413 |
+| V-03 | Extensão inválida (.pdf) | arquivo.pdf | Lança AppError | `UNSUPPORTED_MEDIA_TYPE` | 415 |
+| V-04 | MIME inválido | .txt com MIME errado | Lança AppError | `UNSUPPORTED_MEDIA_TYPE` | 415 |
+| V-05 | MIME/extensão incompatíveis | .txt com MIME de .docx | Lança AppError | `UNSUPPORTED_MEDIA_TYPE` | 415 |
+| V-06 | Arquivo vazio (0 bytes) | Buffer vazio | Lança AppError | `EMPTY_FILE` | 400 |
+| V-07 | maxLength fora do range | maxLength=10 | Lança AppError | `INVALID_PARAMETER` | 400 |
+| V-08 | maxLength NaN | maxLength="abc" | Lança AppError | `INVALID_PARAMETER` | 400 |
+| V-09 | language inválido | language="!!!" | Lança AppError | `INVALID_PARAMETER` | 400 |
+| V-10 | .txt válido | sample.txt, text/plain | Passa sem erro | — | — |
+| V-11 | .docx válido | sample.docx, MIME correto | Passa sem erro | — | — |
 
-### Testes unitários para geminiService
-Caminho feliz, chave de API ausente, SDK lança erro, SDK retorna string vazia.
+### Seção 2 — geminiService
 
-### Testes unitários para summarizeFile
-Caminho feliz .txt, caminho feliz .docx, texto vazio após extração, Gemini falha, processingTimeMs é inteiro não negativo.
+| ID | Cenário | Setup | Resultado esperado |
+|----|---------|-------|-------------------|
+| G-01 | Caminho feliz | SDK retorna texto | Retorna string do resumo |
+| G-02 | API key ausente | `GEMINI_API_KEY` undefined | Lança erro |
+| G-03 | SDK lança erro | Mock rejeita | Propaga erro |
+| G-04 | Resposta vazia | SDK retorna "" | Lança AppError `UNPROCESSABLE_CONTENT` 422 |
 
-### Testes de controller
-Sem arquivo, sucesso do serviço (200 com todos os 6 campos), serviço lança AppError, serviço lança Error genérico.
+### Seção 3 — summarizeFile
 
-### Testes de contrato
-Shape do SummaryResponse, shape do ErrorResponse, summaryLength === summary.length, language ecoa a entrada.
+| ID | Cenário | Setup | Resultado esperado |
+|----|---------|-------|-------------------|
+| S-01 | .txt caminho feliz | texto válido, Gemini ok | Retorna objeto com 6 campos |
+| S-02 | .docx caminho feliz | docx válido, Gemini ok | Retorna objeto com 6 campos |
+| S-03 | Texto vazio pós-extração | fileService retorna "" | Lança AppError `EMPTY_FILE` 400 |
+| S-04 | Gemini falha | geminiService rejeita | Propaga erro |
+| S-05 | processingTimeMs válido | qualquer input ok | campo é inteiro >= 0 |
 
-## Código de teste a escrever em tests/summaryService.spec.ts
+### Seção 4 — Controller
 
-### Estrutura
-```typescript
-import { validateFile } from '../services/summaryService.ts';
-// mock fileService e geminiService no topo
+| ID | Cenário | Request | Resposta esperada |
+|----|---------|---------|------------------|
+| C-01 | Sem arquivo | POST sem file | 400 `NO_FILE` |
+| C-02 | Sucesso | POST com .txt válido | 200 com 6 campos |
+| C-03 | AppError do serviço | serviço lança AppError | Status correto + `{ error: { code, message } }` |
+| C-04 | Erro genérico | serviço lança Error | 500 `INTERNAL_ERROR` sem detalhes internos |
 
-describe('validateFile', () => {
-  // um it() por cenário
-});
+### Seção 5 — Contrato de resposta
 
-describe('summarizeFile', () => {
-  // um it() por cenário
-});
-```
+| ID | Cenário | Verificação |
+|----|---------|------------|
+| R-01 | Shape SummaryResponse | Tem exatamente: summary, originalLength, summaryLength, language, model, processingTimeMs |
+| R-02 | Shape ErrorResponse | Tem exatamente: `{ error: { code, message } }` |
+| R-03 | summaryLength coerente | `summaryLength === summary.length` |
+| R-04 | language ecoa entrada | language da resposta === language do request |
 
-### Padrão de asserção para casos de erro
-```typescript
-expect(() => validateFile(input)).toThrow(
-  expect.objectContaining({ code: 'FILE_TOO_LARGE' })
-);
-```
-Use `toThrow(expect.objectContaining({ code }))` — não correspondência de string.
+## Saída
 
-### Padrão de mock
-```typescript
-jest.mock('../services/fileService.ts', () => ({
-  readFile: jest.fn(),
-}));
-jest.mock('../services/geminiService.ts', () => ({
-  generateContentFromGemini: jest.fn(),
-}));
-```
-
-## Fixtures a criar
-
-- `tests/fixtures/sample.txt` — já existe, mantenha
-- `tests/fixtures/empty.txt` — já existe, mantenha
-- `tests/fixtures/corrupted.docx` — já existe, mantenha
-- `tests/fixtures/sample.docx` — crie um buffer docx mínimo válido em um `beforeAll` se o arquivo não existir
-
-Para o teste de arquivo muito grande, gere o buffer programaticamente dentro do teste:
-```typescript
-const oversizedBuffer = Buffer.alloc(10 * 1024 * 1024 + 1);
-```
-
-## Após escrever, execute os testes
-
-Execute `npm test` e inclua a saída no resumo. Cada novo teste deve FALHAR.
-Falhas aceitáveis: `Error: validateFile not implemented` ou `Error: summarizeFile not implemented`.
-Falhas inaceitáveis: erros de sintaxe, erros de importação, erros de mock.
-
-## Exiba este resumo após a conclusão
+Após gerar o arquivo, exiba:
 
 ```
 ## Fase 2 concluída
 
-Arquivos gerados:
-  - docs/TEST_PLAN.md
-  - tests/summaryService.spec.ts (atualizado)
+Arquivo: docs/TEST_PLAN.md
+Total de cenários: X
 
-Resultado dos testes: X testes, X falhando (esperado), X passando
-Motivo das falhas: stubs "not implemented" (correto)
-
-Problemas inesperados (se houver):
-  - [liste erros de importação ou mock que devem ser corrigidos antes da Fase 3]
-
-Próximo passo:
-  @phase3-development
-  Anexe: docs/CODING_PLAN.md + sua descrição de US
+Próximo: @phase3-development com docs/CODING_PLAN.md + docs/TEST_PLAN.md
 ```
 
-## Regras inegociáveis
+## Regras
 
-- Cada teste deve verificar a string exata do error.code (do SPEC.md §2.4), não apenas que um erro foi lançado.
-- Nenhum teste pode usar `.skip` ou `.only`.
-- Os testes NÃO devem passar até que a Fase 3 implemente as funcionalidades.
-- O shape da resposta com 6 campos (summary, originalLength, summaryLength, language, model, processingTimeMs) deve ser verificado em pelo menos um teste.
+- O TEST_PLAN.md é um documento de roteiro — **não contém código**.
+- Todo `error.code` deve ser exato conforme SPEC.md §2.4.
+- Cada cenário de validação de SPEC.md §3 deve ter pelo menos um test case.
+- Nenhum campo pode conter "???" ou "A DEFINIR".

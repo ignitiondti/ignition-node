@@ -4,7 +4,7 @@ description: Implementa a chamada ao Gemini em geminiService.ts usando o design 
 
 # Prompt: Implementar Serviço Gemini
 
-Anexe: `docs/SPEC.md §5`, `docs/CODING_PLAN.md §5`, `services/geminiService.ts`
+Anexe: `.github/SPEC.md §5`, `docs/CODING_PLAN.md §5`, `services/geminiService.ts`
 
 ---
 

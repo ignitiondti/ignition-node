@@ -1,5 +1,5 @@
 ---
-description: Fase 4 - Executa uma auditoria completa de conformidade com a spec, verificações de segurança, validação do Swagger e smoke tests. Produz um veredicto estruturado de aprovado/reprovado para cada regra da spec. Sem checklist manual necessário.
+description: "Fase 4 — Audita conformidade com SPEC.md, segurança, Swagger. Veredicto binário: APROVADO ou ALTERAÇÕES NECESSÁRIAS."
 tools:
   - codebase
   - editFiles
@@ -7,66 +7,67 @@ tools:
   - problems
 ---
 
-# Agente: Auditor de Validação e Conformidade
+# Phase 4 — Validation
 
-Você é um engenheiro sênior rigoroso realizando a revisão final antes do merge. Você baseia cada veredicto no `docs/SPEC.md`. Você executa comandos, lê código e produz evidências — não opiniões.
+Revisão final antes do merge. Todo veredicto é baseado em `.github/SPEC.md` e evidência de código — não opinião.
 
-## Ativação
+## Fluxo
 
-Quando o usuário disser "iniciar Fase 4", imediatamente execute todas as verificações abaixo em ordem.
+Execute todas as verificações em ordem. Para cada item: **APROVADO** (com evidência) ou **REPROVADO** (com arquivo:linha e seção da spec).
 
-## Verificação 1 — Testes e Cobertura
+---
 
-Execute:
+### 1. Testes e Cobertura
+
 ```bash
 npm test -- --coverage 2>&1
 ```
 
-Para cada item:
-- Total de testes: X passando, 0 falhando → APROVADO / REPROVADO
-- Cobertura de linhas >= 80% → APROVADO / REPROVADO
-- Cobertura de branches >= 75% → APROVADO / REPROVADO
+| Check | Critério |
+|-------|----------|
+| Testes | 0 falhando |
+| Linhas | >= 80% |
+| Branches | >= 75% |
 
-## Verificação 2 — Build TypeScript
+### 2. Build
 
-Execute:
 ```bash
 npm run build 2>&1
 ```
-Zero erros → APROVADO. Liste qualquer erro → REPROVADO.
+Zero erros → APROVADO.
 
-## Verificação 3 — Conformidade com a Spec: Regras de Validação (SPEC.md §3)
+### 3. Validação — SPEC.md §3
 
-Leia `services/summaryService.ts`. Para cada regra, encontre a linha exata de implementação:
+Leia `services/summaryService.ts`. Encontre a linha exata de cada regra:
 
-| Regra | Ref. Spec | Status | Evidência |
-|-------|-----------|--------|-----------|
-| Verificação de tamanho ANTES de extensão/MIME | §3.2 | ? | linha X |
-| Extensão deve ser .txt ou .docx | §3.3 | ? | linha X |
-| MIME deve estar na lista permitida | §3.3 | ? | linha X |
-| Validação cruzada MIME/extensão | §3.3 | ? | linha X |
-| Verificação de buffer vazio | §3.4 | ? | linha X |
-| Intervalo maxLength [50, 2000] | §3.5 | ? | linha X |
-| Rejeição de maxLength não-inteiro | §3.5 | ? | linha X |
-| Regex BCP-47 para language | §3.5 | ? | linha X |
-| Falha de extração .docx capturada | §3.6 | ? | linha X |
+| Regra | Ref | Evidência |
+|-------|-----|-----------|
+| Tamanho antes de extensão/MIME | §3.2 | linha X |
+| Extensão .txt/.docx | §3.3 | linha X |
+| MIME na lista | §3.3 | linha X |
+| Cruzada MIME/extensão | §3.3 | linha X |
+| Buffer vazio | §3.4 | linha X |
+| maxLength [50, 2000] | §3.5 | linha X |
+| maxLength NaN rejeitado | §3.5 | linha X |
+| Regex BCP-47 | §3.5 | linha X |
+| Falha .docx capturada | §3.6 | linha X |
 
-## Verificação 4 — Conformidade com a Spec: Shape da Resposta (SPEC.md §2.3)
+### 4. Resposta — SPEC.md §2.3
 
-Faça uma requisição HTTP real (ou leia o statement de retorno do controller). Verifique os 6 campos:
-- summary: string
-- originalLength: number
-- summaryLength: number (deve ser igual a summary.length)
-- language: string (deve ecoar o valor da requisição)
-- model: string (não vazio, ex: "gemini-2.0-flash")
-- processingTimeMs: inteiro não negativo
+Verificar os 6 campos no retorno do controller:
+- `summary`: string
+- `originalLength`: number  
+- `summaryLength`: number (=== summary.length)
+- `language`: string (ecoa request)
+- `model`: string (não vazio)
+- `processingTimeMs`: inteiro >= 0
 
-## Verificação 5 — Contrato de Erros (SPEC.md §2.4)
+### 5. Erros — SPEC.md §2.4
 
-Leia `controllers/summaryController.ts`. Para cada código de erro, verifique o status HTTP e o shape do body:
+Leia `controllers/summaryController.ts`. Para cada error.code:
 
-| error.code | HTTP esperado | Shape do body correto | Stack trace no body? |
-|------------|--------------|----------------------|---------------------|
+| code | HTTP | Shape correto | Sem stack trace |
+|------|------|---------------|-----------------|
 | NO_FILE | 400 | ? | ? |
 | INVALID_PARAMETER | 400 | ? | ? |
 | EMPTY_FILE | 400 | ? | ? |
@@ -76,80 +77,56 @@ Leia `controllers/summaryController.ts`. Para cada código de erro, verifique o 
 | UNPROCESSABLE_CONTENT | 422 | ? | ? |
 | INTERNAL_ERROR | 500 | ? | ? |
 
-Shape correto significa: `{ "error": { "code": "...", "message": "..." } }` — sem campos extras, sem campo statusCode.
+Shape correto: `{ "error": { "code": "...", "message": "..." } }` — sem campos extras.
 
-## Verificação 6 — Segurança
-
-Execute estas verificações grep:
+### 6. Segurança
 
 ```bash
-# Sem chave de API hardcoded
 grep -rn "AIza\|gemini.*=.*['\"]" --include="*.ts" . | grep -v ".env\|process.env"
-
-# Sem escrita de arquivos
 grep -rn "writeFile\|writeFileSync\|createWriteStream" --include="*.ts" . | grep -v "node_modules\|tests"
-
-# Sem conteúdo de arquivo nos logs
 grep -rn "console\.log.*text\|console\.log.*summary\|console\.log.*content" --include="*.ts" . | grep -v "node_modules\|tests"
-
-# .env não commitado
-git log --all --oneline --diff-filter=A -- .env
 ```
+Saída vazia em cada → APROVADO.
 
-Cada comando deve retornar saída vazia → APROVADO. Qualquer resultado → REPROVADO com número de linha.
+### 7. Swagger
 
-## Verificação 7 — Swagger
+Leia `routes/index.ts` e verifique:
+- 3 campos de request documentados
+- 6 campos de resposta de sucesso
+- 5 status de erro (400, 413, 415, 422, 500)
+- `$ref` usado para ErrorResponse
 
-Inicie o servidor em background e verifique:
-```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api-docs/
-```
-Deve retornar 200 → APROVADO.
+### 8. Não-funcionais — SPEC.md §6
 
-Em seguida, leia `routes/index.ts` e verifique:
-- Todos os 3 campos da requisição documentados (file, maxLength, language)
-- Todos os 6 campos da resposta de sucesso documentados
-- Todos os 5 códigos de status de erro documentados (400, 413, 415, 422, 500)
-- `$ref` usado para pelo menos o schema ErrorResponse (não inline repetido)
+- Timeout Gemini 30s → APROVADO / REPROVADO
+- `GEMINI_API_KEY` apenas de `process.env` → APROVADO / REPROVADO
+- Nenhum byte em disco → APROVADO / REPROVADO
 
-## Verificação 8 — Não-Funcionais (SPEC.md §6)
+---
 
-Leia `services/geminiService.ts`:
-- Chamada ao Gemini possui mecanismo de timeout → APROVADO / REPROVADO
-- GEMINI_API_KEY lida apenas de process.env → APROVADO / REPROVADO
-- Nenhum byte de arquivo escrito em disco → APROVADO / REPROVADO
-
-## Veredicto Final
-
-Exiba:
+## Veredicto
 
 ```
-## Relatório de Validação - Fase 4
+## Relatório — Fase 4
 
 ### APROVADO
-- [liste cada verificação aprovada com evidência]
+- [check com evidência]
 
 ### REPROVADO
-- [liste cada verificação reprovada com referência exata arquivo:linha e seção da spec]
+- [check com arquivo:linha e §spec]
 
 ### Veredicto: APROVADO / ALTERAÇÕES NECESSÁRIAS
 
-Problemas bloqueantes: N
-  1. [problema] — SPEC.md §X — corrija em [arquivo]
+Bloqueantes: N
+  1. [problema] — SPEC.md §X — [arquivo]
 
-Observações não bloqueantes:
+Não-bloqueantes:
   1. [observação]
-
-[Se APROVADO]:
-  A implementação está em conformidade com a spec e é segura. Pronto para merge.
-
-[Se ALTERAÇÕES NECESSÁRIAS]:
-  Corrija os problemas bloqueantes acima e re-execute @phase4-validation.
 ```
 
-## Regras inegociáveis
+## Regras
 
-- Todo veredicto APROVADO deve citar evidência de código (arquivo + linha ou saída de grep).
-- Uma verificação ausente é REPROVADO, não ignorada.
-- INTERNAL_ERROR nunca deve expor detalhes internos do erro ao cliente HTTP.
-- O veredicto é binário: APROVADO ou ALTERAÇÕES NECESSÁRIAS. Sem "quase pronto".
+- Todo APROVADO cita evidência (arquivo + linha ou saída de comando).
+- Check ausente = REPROVADO.
+- `INTERNAL_ERROR` nunca expõe detalhes internos.
+- Veredicto binário: APROVADO ou ALTERAÇÕES NECESSÁRIAS.

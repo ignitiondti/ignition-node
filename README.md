@@ -150,8 +150,7 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 **O que você faz:**
 1. Abra o Copilot Chat em modo agente → selecione `phase1-coding-plan`
 2. Cole sua descrição de US
-3. Anexe `docs/SPEC.md`
-4. Envie
+3. Envie
 
 **O que o agente faz:**
 - Lê a spec e o código existente
@@ -211,7 +210,6 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 **O que você faz:**
 1. Mude para `phase4-validation`
 2. Envie "iniciar Fase 4"
-3. Anexe `docs/SPEC.md` e todos os arquivos de serviço
 
 **O que o agente faz:**
 - Executa `npm test -- --coverage` e `npm run build`
@@ -260,7 +258,7 @@ Os templates em `.github/prompts/` são para tarefas específicas dentro de uma 
 }
 ```
 
-Spec completa: `docs/SPEC.md`
+Spec completa: `.github/SPEC.md`
 
 ---
 

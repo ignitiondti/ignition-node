@@ -4,11 +4,11 @@ description: Implementa uma regra de validação específica em summaryService.t
 
 # Prompt: Implementar Regra de Validação
 
-Anexe: `docs/SPEC.md`, `services/summaryService.ts`, `types/AppError.ts`
+Anexe: `.github/SPEC.md`, `services/summaryService.ts`, `types/AppError.ts`
 
 ---
 
-Usando `docs/SPEC.md §[SEÇÃO]`, implemente a verificação `[NOME_DA_REGRA]` em `services/summaryService.ts`.
+Usando `.github/SPEC.md §[SEÇÃO]`, implemente a verificação `[NOME_DA_REGRA]` em `services/summaryService.ts`.
 
 - Lance `AppError` com `code: '[CODIGO_ERRO]'`, `statusCode: [STATUS_HTTP]`
 - A mensagem NÃO deve revelar detalhes internos

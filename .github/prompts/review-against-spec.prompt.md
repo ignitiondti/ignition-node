@@ -4,7 +4,7 @@ description: Revisa um arquivo-fonte quanto à conformidade com a spec, corretud
 
 # Prompt: Revisar Arquivo Contra a Spec
 
-Anexe: `docs/SPEC.md`, `[ARQUIVO_A_REVISAR]`
+Anexe: `.github/SPEC.md`, `[ARQUIVO_A_REVISAR]`
 
 ---
 
