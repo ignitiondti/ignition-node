@@ -114,10 +114,10 @@ docs/
 .github/
   copilot-instructions.md       # Regras de contexto do Copilot para este repositório
   agents/                       # Agentes de fase — guiados pela sua descrição de US
-    phase1-coding-plan.md
-    phase2-test-plan.md
-    phase3-development.md
-    phase4-validation.md
+    fase1-plano-codigo.md
+    fase2-plano-testes.md
+    fase3-desenvolvimento.md
+    fase4-validacao.md
   prompts/                      # Templates de prompt reutilizáveis para tarefas específicas
 ```
 
@@ -145,10 +145,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 1 — Plano de Código
 
-**Agente:** `@phase1-coding-plan`
+**Agente:** `@fase1-plano-codigo`
 
 **O que você faz:**
-1. Abra o Copilot Chat em modo agente → selecione `phase1-coding-plan`
+1. Abra o Copilot Chat em modo agente → selecione `fase1-plano-codigo`
 2. Cole sua descrição de US
 3. Envie
 
@@ -164,10 +164,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 2 — Plano de Testes e Testes com Falha
 
-**Agente:** `@phase2-test-plan`
+**Agente:** `@fase2-plano-testes`
 
 **O que você faz:**
-1. Mude para `phase2-test-plan`
+1. Mude para `fase2-plano-testes`
 2. Cole sua descrição de US
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie
@@ -185,10 +185,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 3 — Implementação
 
-**Agente:** `@phase3-development`
+**Agente:** `@fase3-desenvolvimento`
 
 **O que você faz:**
-1. Mude para `phase3-development`
+1. Mude para `fase3-desenvolvimento`
 2. Cole sua descrição de US
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie
@@ -205,10 +205,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 4 — Validação
 
-**Agente:** `@phase4-validation`
+**Agente:** `@fase4-validacao`
 
 **O que você faz:**
-1. Mude para `phase4-validation`
+1. Mude para `fase4-validacao`
 2. Envie "iniciar Fase 4"
 
 **O que o agente faz:**
