@@ -99,7 +99,7 @@ Em `controllers/summaryController.ts`:
 ### B4 — Gemini Service
 
 Em `services/geminiService.ts`:
-- Modelo: `gemini-2.0-flash`
+- Modelo: `gemini-flash-latest` — sempre use `const GEMINI_MODEL = 'gemini-flash-latest';`
 - Usar prompts de CODING_PLAN.md §5
 - Timeout: AbortSignal 30s
 - Resposta vazia → `UNPROCESSABLE_CONTENT` 422
@@ -122,6 +122,21 @@ Em `controllers/summaryController.ts`:
 - AppError → `res.status(err.statusCode).json({ error: { code, message } })`
 - Erro genérico → log interno + `500 INTERNAL_ERROR` sem detalhes
 - Sucesso → `res.status(200).json(result)`
+
+> **ARMADILHA CONHECIDA — FILE_TOO_LARGE retornando INTERNAL_ERROR:**
+> O `catch` do controller **deve verificar `instanceof AppError` primeiro**, antes do handler genérico.
+> Se a ordem estiver errada, erros de validação (ex.: arquivo > 10 MB) são engolidos como `INTERNAL_ERROR`.
+> Padrão obrigatório:
+> ```typescript
+> } catch (err) {
+>   if (err instanceof AppError) {
+>     return res.status(err.statusCode).json({ error: { code: err.code, message: err.message } });
+>   }
+>   console.error(err);
+>   return res.status(500).json({ error: { code: 'INTERNAL_ERROR', message: 'An unexpected error occurred.' } });
+> }
+> ```
+> Nunca use um `catch` genérico único que ignore o tipo do erro.
 
 ### B7 — Swagger JSDoc
 
