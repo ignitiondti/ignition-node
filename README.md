@@ -114,8 +114,8 @@ docs/
 .github/
   copilot-instructions.md       # Regras de contexto do Copilot para este repositório
   agents/                       # Agentes de fase — guiados pela sua descrição de US
-    fase1-plano-codigo.md
-    fase2-plano-testes.md
+    fase1-planejamento-estoria.md
+    fase2-pano-roteiro-testes.md
     fase3-desenvolvimento.md
     fase4-validacao.md
   prompts/                      # Templates de prompt reutilizáveis para tarefas específicas
@@ -145,10 +145,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 1 — Plano de Código
 
-**Agente:** `@fase1-plano-codigo`
+**Agente:** `@fase1-planejamento-estoria`
 
 **O que você faz:**
-1. Abra o Copilot Chat em modo agente → selecione `fase1-plano-codigo`
+1. Abra o Copilot Chat em modo agente → selecione `fase1-planejamento-estoria`
 2. Cole sua descrição de US
 3. Envie
 
@@ -164,10 +164,10 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ### Fase 2 — Plano de Testes e Testes com Falha
 
-**Agente:** `@fase2-plano-testes`
+**Agente:** `@fase2-pano-roteiro-testes`
 
 **O que você faz:**
-1. Mude para `fase2-plano-testes`
+1. Mude para `fase2-pano-roteiro-testes`
 2. Cole sua descrição de US
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie

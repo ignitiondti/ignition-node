@@ -11,8 +11,8 @@ Escreva uma **User Story** e entregue ao agente da fase. O agente faz o trabalho
 
 | Fase | Agente | Entrada | Saída |
 |------|--------|---------|-------|
-| 1 — Plano de Código | `@fase1-plano-codigo` | Sua US | `docs/CODING_PLAN.md` |
-| 2 — Roteiro de Testes | `@fase2-plano-testes` | `docs/CODING_PLAN.md` | `docs/TEST_PLAN.md` (roteiro, sem código) |
+| 1 — Plano de Código | `@fase1-planejamento-estoria` | Sua US | `docs/CODING_PLAN.md` |
+| 2 — Roteiro de Testes | `@fase2-pano-roteiro-testes` | `docs/CODING_PLAN.md` | `docs/TEST_PLAN.md` (roteiro, sem código) |
 | 3 — Desenvolvimento | `@fase3-desenvolvimento` | `docs/CODING_PLAN.md` + `docs/TEST_PLAN.md` | Testes escritos + código implementado, tudo passando |
 | 4 — Validação | `@fase4-validacao` | Todos os arquivos de serviço | Veredicto APROVADO / ALTERAÇÕES NECESSÁRIAS |
 
