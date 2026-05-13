@@ -168,7 +168,7 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 **O que você faz:**
 1. Mude para `fase2-pano-roteiro-testes`
-2. Cole sua descrição de US
+2. Prompt: Leia docs/CODING_PLAN.md e .github/SPEC.md e gere docs/TEST_PLAN.md completo.
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie
 
@@ -189,7 +189,7 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 **O que você faz:**
 1. Mude para `fase3-desenvolvimento`
-2. Cole sua descrição de US
+2. Prompt: Usando docs/CODING_PLAN.md e docs/TEST_PLAN.md como guia, implemente
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie
 
@@ -209,7 +209,7 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 **O que você faz:**
 1. Mude para `fase4-validacao`
-2. Envie "iniciar Fase 4"
+2. Prompt: Audite o estado atual do projeto contra .github/SPEC.md e gere docs/VALIDATION_REPORT.md.
 
 **O que o agente faz:**
 - Executa `npm test -- --coverage` e `npm run build`
