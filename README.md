@@ -115,7 +115,7 @@ docs/
   copilot-instructions.md       # Regras de contexto do Copilot para este repositório
   agents/                       # Agentes de fase — guiados pela sua descrição de US
     fase1-planejamento-estoria.md
-    fase2-pano-roteiro-testes.md
+    fase2-plano-roteiro-testes.md
     fase3-desenvolvimento.md
     fase4-validacao.md
   prompts/                      # Templates de prompt reutilizáveis para tarefas específicas
