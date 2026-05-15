@@ -1,5 +1,5 @@
 ---
-description: "Fase 4 — Audita conformidade com SPEC.md, segurança, Swagger. Gera docs/VALIDATION_REPORT.md com veredicto binário: APROVADO ou ALTERAÇÕES NECESSÁRIAS."
+description: "Fase 3 — Audita conformidade com SPEC.md, segurança, Swagger. Gera docs/VALIDATION_REPORT.md com veredicto binário: APROVADO ou ALTERAÇÕES NECESSÁRIAS."
 tools:
   - codebase
   - editFiles
@@ -7,7 +7,7 @@ tools:
   - problems
 ---
 
-# Fase 4 — Validação
+# Fase 3 — Validação
 
 Revisão final antes do merge. Todo veredicto é baseado em `.github/SPEC.md` e evidência de código — não em opinião.
 

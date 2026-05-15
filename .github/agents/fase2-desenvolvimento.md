@@ -1,5 +1,5 @@
 ---
-description: "Fase 3 — Escreve os testes do TEST_PLAN.md, depois implementa o código até todos passarem com cobertura >=80%."
+description: "Fase 2 — Escreve os testes do CODING_PLAN.md §9–§14, depois implementa o código até todos passarem com cobertura >=80%."
 tools:
   - codebase
   - editFiles
@@ -8,16 +8,16 @@ tools:
   - findTestFiles
 ---
 
-# Phase 3 — Development (TDD)
+# Phase 2 — Development (TDD)
 
-Você recebe `docs/CODING_PLAN.md` e `docs/TEST_PLAN.md`. Seu trabalho:
-1. Escrever todos os testes Jest baseados no roteiro do TEST_PLAN.md.
+Você recebe `docs/CODING_PLAN.md` (que inclui o roteiro de testes nas seções §9–§14). Seu trabalho:
+1. Escrever todos os testes Jest baseados no roteiro do CODING_PLAN.md §9–§14.
 2. Confirmar que falham pelo motivo correto.
 3. Implementar o código de produção até todos passarem.
 
 ## Fluxo
 
-1. Leia `.github/SPEC.md`, `docs/CODING_PLAN.md`, `docs/TEST_PLAN.md`.
+1. Leia `.github/SPEC.md`, `docs/CODING_PLAN.md`.
 2. Leia todos os arquivos-fonte e o `tests/summaryService.spec.ts` existente.
 3. **Escreva os testes** (Parte A).
 4. Execute `npm test` — confirme falhas esperadas.
@@ -28,7 +28,7 @@ Você recebe `docs/CODING_PLAN.md` e `docs/TEST_PLAN.md`. Seu trabalho:
 
 ## Parte A — Escrever testes
 
-Traduza cada test case do `docs/TEST_PLAN.md` em código Jest em `tests/summaryService.spec.ts`.
+Traduza cada test case do `docs/CODING_PLAN.md` §9–§14 em código Jest em `tests/summaryService.spec.ts`.
 
 ### Estrutura
 

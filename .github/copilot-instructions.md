@@ -11,10 +11,9 @@ Escreva uma **User Story** e entregue ao agente da fase. O agente faz o trabalho
 
 | Fase | Agente | Entrada | Saída |
 |------|--------|---------|-------|
-| 1 — Plano de Código | `@fase1-planejamento-estoria` | Sua US | `docs/CODING_PLAN.md` |
-| 2 — Roteiro de Testes | `@fase2-pano-roteiro-testes` | `docs/CODING_PLAN.md` | `docs/TEST_PLAN.md` (roteiro, sem código) |
-| 3 — Desenvolvimento | `@fase3-desenvolvimento` | `docs/CODING_PLAN.md` + `docs/TEST_PLAN.md` | Testes escritos + código implementado, tudo passando |
-| 4 — Validação | `@fase4-validacao` | Todos os arquivos de serviço | Veredicto APROVADO / ALTERAÇÕES NECESSÁRIAS |
+| 1+2 — Plano de Código & Testes | `@fase1-planejamento-estoria` | Sua US | `docs/CODING_PLAN.md` (plano técnico + roteiro de testes) |
+| 2 — Desenvolvimento | `@fase2-desenvolvimento` | `docs/CODING_PLAN.md` | Testes escritos + código implementado, tudo passando |
+| 3 — Validação | `@fase3-validacao` | Todos os arquivos de serviço | Veredicto APROVADO / ALTERAÇÕES NECESSÁRIAS |
 
 O `.github/SPEC.md` é a lei que substitui qualquer outra coisa — os agentes o leem automaticamente.
 
@@ -26,7 +25,7 @@ O `.github/SPEC.md` é a lei que substitui qualquer outra coisa — os agentes o
 |------------|---------|---------|
 | Automático | `.github/SPEC.md` | Lido pelos agentes — não precisa anexar |
 | Obrigatório | O arquivo que você está editando | Para que a IA veja o código real |
-| Recomendado | `docs/CODING_PLAN.md` (gerado na Fase 1) | Para que os agentes das Fases 2/3 se alinhem ao plano |
+| Recomendado | `docs/CODING_PLAN.md` (gerado na Fase 1+2) | Para que o agente da Fase 3 se alinhe ao plano e roteiro de testes |
 
 ---
 
@@ -58,7 +57,7 @@ Não altere nenhuma outra função."
 
 ```
 "Escreva um teste Jest unitário para a função validateFile em summaryService.ts
-cobrindo o cenário U-V-05 do docs/TEST_PLAN.md:
+cobrindo o cenário V-05 do docs/CODING_PLAN.md §9:
 O tipo MIME é application/vnd.openxmlformats-officedocument.wordprocessingml.document
 mas a extensão do arquivo é .txt. Esperado: lança com code UNSUPPORTED_MEDIA_TYPE."
 ```
@@ -139,7 +138,7 @@ Os seguintes arquivos são **intencionalmente incompletos** — eles são o que 
 
 | Dependência | Versão em uso | Observação |
 |-------------|---------------|------------|
-| `@google/generative-ai` | latest | Use o nome de modelo `gemini-2.0-flash` |
+| `@google/generative-ai` | latest | Use o nome de modelo `gemini-flash-latest` |
 | `mammoth` | latest | Não troque por outra biblioteca docx |
 | `express-fileupload` | latest | O arquivo está em `req.files.file` |
 | TypeScript | latest | Modo strict ativado |

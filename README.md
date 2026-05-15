@@ -115,15 +115,14 @@ docs/
   copilot-instructions.md       # Regras de contexto do Copilot para este repositório
   agents/                       # Agentes de fase — guiados pela sua descrição de US
     fase1-planejamento-estoria.md
-    fase2-plano-roteiro-testes.md
-    fase3-desenvolvimento.md
-    fase4-validacao.md
+    fase2-desenvolvimento.md
+    fase3-validacao.md
   prompts/                      # Templates de prompt reutilizáveis para tarefas específicas
 ```
 
 ---
 
-## As 4 Fases — Todas guiadas por agentes a partir de uma User Story
+## As 3 Fases — Todas guiadas por agentes a partir de uma User Story
 
 Você não preenche templates em branco. Você escreve uma **User Story** (1–10 frases descrevendo o que quer construir) e entrega ao agente da fase. O agente lê a spec, lê o código e faz o trabalho. Você revisa, aprova e passa para a próxima fase.
 
@@ -143,7 +142,7 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ---
 
-### Fase 1 — Plano de Código
+### Fase 1+2 — Plano de Código & Roteiro de Testes
 
 **Agente:** `@fase1-planejamento-estoria`
 
@@ -153,43 +152,22 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 3. Envie
 
 **O que o agente faz:**
+- Extrai persona, dor, KPIs e restrições comerciais da US
 - Lê a spec e o código existente
-- Gera `docs/CODING_PLAN.md` com arquitetura, detalhamento dos módulos, fluxo de dados, todas as regras de validação, as strings de prompt do Gemini, tabela de tratamento de erros, definições de schema do Swagger e riscos
-- Explica cada decisão
-- Informa exatamente como iniciar a Fase 2
+- Gera `docs/CODING_PLAN.md` com: contexto de negócio, arquitetura, módulos, fluxo de dados, regras de validação, strings de prompt do Gemini (`gemini-flash-latest`), tratamento de erros, schema Swagger, riscos de negócio/técnicos **e** roteiro de testes integrado (§9–§14)
+- Cada decisão técnica é ancorada em um KPI ou critério de aceite de negócio
 
-**Critério de saída:** `docs/CODING_PLAN.md` existe sem seções vazias.
-
----
-
-### Fase 2 — Plano de Testes e Testes com Falha
-
-**Agente:** `@fase2-pano-roteiro-testes`
-
-**O que você faz:**
-1. Mude para `fase2-pano-roteiro-testes`
-2. Prompt: Leia docs/CODING_PLAN.md e .github/SPEC.md e gere docs/TEST_PLAN.md completo.
-3. Anexe `docs/CODING_PLAN.md`
-4. Envie
-
-**O que o agente faz:**
-- Gera `docs/TEST_PLAN.md` com todos os IDs de cenário e labels `it(...)`
-- Escreve o código Jest completo em `tests/summaryService.spec.ts`
-- Cria os arquivos de fixture que faltam
-- Executa `npm test` e mostra a saída de falha
-- Confirma que cada teste falha pelo motivo correto (não por erros de import/sintaxe)
-
-**Critério de saída:** `npm test` executa, todos os novos testes falham com `"not implemented"`.
+**Critério de saída:** `docs/CODING_PLAN.md` existe, todas as seções §0–§14 preenchidas sem placeholders.
 
 ---
 
-### Fase 3 — Implementação
+### Fase 2 — Implementação
 
-**Agente:** `@fase3-desenvolvimento`
+**Agente:** `@fase2-desenvolvimento`
 
 **O que você faz:**
-1. Mude para `fase3-desenvolvimento`
-2. Prompt: Usando docs/CODING_PLAN.md e docs/TEST_PLAN.md como guia, implemente
+1. Mude para `fase2-desenvolvimento`
+2. Prompt: Usando docs/CODING_PLAN.md como guia, implemente
 3. Anexe `docs/CODING_PLAN.md`
 4. Envie
 
@@ -203,12 +181,12 @@ Como desenvolvedor, quero um endpoint POST /api/v1/summarize que:
 
 ---
 
-### Fase 4 — Validação
+### Fase 3 — Validação
 
-**Agente:** `@fase4-validacao`
+**Agente:** `@fase3-validacao`
 
 **O que você faz:**
-1. Mude para `fase4-validacao`
+1. Mude para `fase3-validacao`
 2. Prompt: Audite o estado atual do projeto contra .github/SPEC.md e gere docs/VALIDATION_REPORT.md.
 
 **O que o agente faz:**
@@ -253,7 +231,7 @@ Os templates em `.github/prompts/` são para tarefas específicas dentro de uma 
   "originalLength": 4821,
   "summaryLength": 312,
   "language": "pt-BR",
-  "model": "gemini-2.0-flash",
+  "model": "gemini-flash-latest",
   "processingTimeMs": 1423
 }
 ```
