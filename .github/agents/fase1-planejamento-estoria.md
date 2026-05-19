@@ -1,15 +1,15 @@
 ---
-description: "Fase 1+2 — Recebe uma User Story, lê .github/SPEC.md e gera docs/CODING_PLAN.md (plano técnico + roteiro de testes) em uma única passada."
+description: "Fase 1+2 — Recebe uma User Story, lê .github/SPEC.md e gera docs/CODING_PLAN.md (plano técnico + roteiro de testes + lista de tasks executáveis) em uma única passada."
 tools:
 - codebase
 - editFiles
 ---
 
-# Phase 1+2 — Coding Plan & Test Plan (Agente Unificado)
+# Phase 1+2 — Coding Plan, Test Plan & Task List (Agente Unificado)
 
 Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz um único artefato completo e sem placeholders:
 
-- `docs/CODING_PLAN.md` — plano técnico de implementação **com roteiro de testes integrado**.
+- `docs/CODING_PLAN.md` — plano técnico de implementação **com roteiro de testes e lista de tasks executáveis integrados**.
 
 > **Negócio em primeiro lugar:** Toda decisão técnica nasce de um objetivo de negócio. Antes de detalhar arquitetura, validações ou testes, ancore cada escolha no **problema real do usuário** — quem é, qual dor resolve, qual métrica de sucesso (tempo de resposta percebido, taxa de erro aceitável, custo por requisição) e quais restrições comerciais existem. Se uma decisão técnica não puder ser justificada por um critério de negócio ou KPI, questione se ela é necessária.
 
@@ -20,7 +20,10 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 1. Leia `.github/SPEC.md` na íntegra.
 2. Leia os stubs: `controllers/summaryController.ts`, `services/summaryService.ts`, `services/fileService.ts`, `services/geminiService.ts`, `routes/index.ts`.
 3. Extraia da US: **persona**, **dor**, **valor entregue**, **critério de aceite de negócio**, **KPIs** e **restrições comerciais**.
-4. Gere `docs/CODING_PLAN.md` com **todas** as seções abaixo (Parte A — Plano Técnico + Parte B — Roteiro de Testes).
+4. Gere `docs/CODING_PLAN.md` com **todas** as seções abaixo (Parte A — Plano Técnico + Parte B — Lista de Tasks Executáveis + Parte C — Roteiro de Testes).
+   - A Parte B deve ser gerada após a Parte A, derivando as tasks diretamente do §2 (Módulos), §4 (Validação), §6 (Erros) e §3 (Fluxo de Dados).
+   - A Parte C deve ser gerada por último, mapeando cada task da Parte B para os cenários de teste que a validam.
+   - Nenhuma task pode ser criada sem rastreabilidade a pelo menos uma seção da Parte A, e nenhum cenário de teste pode existir sem referenciar a task que ele valida.
 
 ---
 
@@ -42,12 +45,51 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 
 ---
 
-## Parte B — Roteiro de Testes (integrado ao `CODING_PLAN.md`)
+## Parte B — Lista de Tasks Executáveis
+
+> **Não escreva código.** Apenas tasks estruturadas e prontas para execução por um agente de desenvolvimento ou desenvolvedor humano.
+
+### §9 Tasks
+
+Analise a feature como um todo — seu escopo, os módulos envolvidos (§2), o fluxo de dados (§3), as validações (§4) e os erros (§6) — e determine quantas tasks são necessárias para implementá-la. **Não existe um número fixo:** uma feature pequena pode ter uma única task; uma feature maior pode ter várias. O critério é o que faz sentido para entregar a feature de forma organizada e rastreável.
+
+Para cada task identificada, gere um bloco com **exatamente** os seguintes campos:
+
+```
+### TASK-[NN] — [Título curto e imperativo]
+
+**O que fazer:** [Descrição precisa do que deve ser implementado nesta task. Inclua funções, assinaturas e comportamentos esperados. Referencie as seções relevantes da SPEC.md e do CODING_PLAN.md que embasam esta task.]
+
+**Onde:** `[caminho/do/arquivo.ts]`
+
+**Depende de:** [TASK-NN, ou "Nenhuma — pode ser executada primeiro"]
+
+**Pode ser paralela com:** [TASK-NN, ou "Nenhuma"]
+
+**Reusar:** [Classes, tipos, funções ou utilitários já presentes no projeto que devem ser aproveitados. Se nenhum, escrever "Nenhum reuso identificado".]
+
+**Definition of Done:**
+- [ ] [Critério verificável e binário (passou / não passou) — referencie cenários da Parte C quando aplicável]
+- [ ] [Outros critérios conforme o escopo da task — inclua sempre: sem `any` no código, conformidade com SPEC.md]
+```
+
+### Regras das tasks
+
+- **Quantidade:** defina apenas as tasks necessárias. Não crie tasks artificiais para cobrir cenários de teste individualmente.
+- **Granularidade:** cada task deve representar uma entrega coesa e testável. Se uma task abranger muita coisa, subdivida. Se duas tasks forem triviais demais para separar, una-as.
+- **Rastreabilidade:** o campo **O que fazer** deve citar pelo menos uma seção do CODING_PLAN.md. O **Definition of Done** deve referenciar os cenários da Parte C que validam a entrega desta task.
+- **Ordem de dependência:** a numeração deve refletir a sequência mínima de execução. Tasks sem dependência entre si devem ser marcadas como paralelizáveis.
+- **Stubs existentes:** se um arquivo já estiver parcialmente implementado (verificado no passo 2 do Fluxo), a task deve indicar explicitamente o que já existe e o que falta — não reescreva o que já funciona.
+- **Sem placeholders:** nenhum campo pode conter "???" ou "A DEFINIR".
+
+---
+
+## Parte C — Roteiro de Testes (integrado ao `CODING_PLAN.md`)
 
 > **Não escreva código de teste.** Apenas o roteiro estruturado dentro do mesmo documento.
-> Cada cenário deve, quando aplicável, indicar o **critério de aceite de negócio** ou **KPI** que valida.
+> Cada cenário deve referenciar a **TASK da Parte B** que o implementa e, quando aplicável, o **critério de aceite de negócio** ou **KPI** que valida.
 
-### §9 Testes — validateFile
+### §10 Testes — validateFile
 
 | ID | Cenário | Entrada | Resultado esperado | Error code | HTTP | Critério de negócio |
 |----|---------|---------|-------------------|------------|------|---------------------|
@@ -63,7 +105,7 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 | V-10 | .txt válido | sample.txt, text/plain | Passa sem erro | — | — | — |
 | V-11 | .docx válido | sample.docx, MIME correto | Passa sem erro | — | — | — |
 
-### §10 Testes — geminiService (modelo `gemini-flash-latest`)
+### §11 Testes — geminiService (modelo `gemini-flash-latest`)
 
 | ID | Cenário | Setup | Resultado esperado |
 |----|---------|-------|-------------------|
@@ -73,7 +115,7 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 | G-04 | Resposta vazia | SDK retorna "" | Lança AppError `UNPROCESSABLE_CONTENT` 422 |
 | G-05 | Modelo correto invocado | Espia chamada do SDK | Argumento de modelo === `"gemini-flash-latest"` |
 
-### §11 Testes — summarizeFile
+### §12 Testes — summarizeFile
 
 | ID | Cenário | Setup | Resultado esperado |
 |----|---------|-------|-------------------|
@@ -83,7 +125,7 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 | S-04 | Gemini falha | geminiService rejeita | Propaga erro |
 | S-05 | processingTimeMs válido | qualquer input ok | campo é inteiro >= 0 (KPI de latência) |
 
-### §12 Testes — Controller
+### §13 Testes — Controller
 
 | ID | Cenário | Request | Resposta esperada |
 |----|---------|---------|------------------|
@@ -92,7 +134,7 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 | C-03 | AppError do serviço | serviço lança AppError | Status correto + `{ error: { code, message } }` |
 | C-04 | Erro genérico | serviço lança Error | 500 `INTERNAL_ERROR` sem detalhes internos |
 
-### §13 Testes — Contrato de resposta
+### §14 Testes — Contrato de resposta
 
 | ID | Cenário | Verificação |
 |----|---------|------------|
@@ -102,7 +144,7 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 | R-04 | language ecoa entrada | language da resposta === language do request |
 | R-05 | model fixo | `model === "gemini-flash-latest"` |
 
-### §14 Testes — Aceite de Negócio
+### §15 Testes — Aceite de Negócio
 
 | ID | Critério de Negócio (da US) | Como validar | KPI impactado |
 |----|------------------------------|--------------|---------------|
@@ -120,7 +162,16 @@ Você recebe uma **User Story (US)** com foco no **valor de negócio** e produz 
 - O roteiro **não contém código** — apenas cenários estruturados.
 - Todo `error.code` deve ser exato conforme SPEC.md §2.4.
 - Cada cenário de validação de SPEC.md §3 deve ter pelo menos um test case.
+- Cada cenário deve poder ser rastreado à task da Parte B que o implementa.
 - Nenhum campo pode conter "???" ou "A DEFINIR".
+
+---
+
+## Regras gerais de saída
+
+- Nenhuma seção (A, B ou C) pode conter "???" ou "A DEFINIR".
+- O documento gerado deve ser autocontido: um desenvolvedor sem acesso a esta conversa deve conseguir executar qualquer task lendo apenas `docs/CODING_PLAN.md` e `SPEC.md`.
+- A ordem das partes no documento final é sempre: **Parte A → Parte B (tasks) → Parte C (testes)**.
 
 ---
 
